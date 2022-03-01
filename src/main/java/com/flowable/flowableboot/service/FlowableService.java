@@ -26,6 +26,8 @@ public class FlowableService {
   @Autowired
   private PersonRepository personRepository;
 
+
+//  Method to initiate prorcess with an assignee name
   public void startProcess(String assignee) {
 
     Person person = personRepository.findByUsername(assignee);
@@ -35,11 +37,14 @@ public class FlowableService {
     runtimeService.startProcessInstanceByKey("oneTaskProcess", variables);
   }
 
+// Method to get tasks by assignee name
   public List<Task> getTasks(String assignee){
     return taskService.createTaskQuery().taskAssignee(assignee).list();
   }
 
+//  Method to add a new user
   public void addUser(String username, String firstName, String lastName, Date birthDate){
+    Person person = new Person();
     personRepository.save(new Person(username, firstName, lastName, birthDate));
   }
 

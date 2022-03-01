@@ -1,5 +1,6 @@
 package com.flowable.flowableboot.controller;
 
+import com.flowable.flowableboot.model.Person;
 import com.flowable.flowableboot.service.FlowableService;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,12 +31,12 @@ public class FlowableRestController {
   }
 
   @PostMapping(value="/user")
-  public void CreateUserEndpoint(@RequestBody CreateUser createUser){
+  public void CreateUserEndpoint(@RequestBody Person person){
 //    List<Object> userDetails = new ArrayList<Object>();
-    String username = createUser.getUsername();
-    String firstName = createUser.getFirstName();
-    String lastName = createUser.getLastName();
-    Date birthdate = createUser.getBirthDate();
+    String username = person.getUsername();
+    String firstName = person.getFirstName();
+    String lastName = person.getLastName();
+    Date birthdate = person.getBirthDate();
     flowableService.addUser(username, firstName, lastName, birthdate);
   }
 
@@ -84,42 +85,4 @@ public class FlowableRestController {
     }
   }
 
-  static class CreateUser{
-    private String username;
-    private String firstName;
-    private String lastName;
-    private Date birthDate;
-
-    public String getUsername() {
-      return username;
-    }
-
-    public void setUsername(String username) {
-      this.username = username;
-    }
-
-    public String getFirstName() {
-      return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-      this.firstName = firstName;
-    }
-
-    public String getLastName() {
-      return lastName;
-    }
-
-    public void setLastName(String lastName) {
-      this.lastName = lastName;
-    }
-
-    public Date getBirthDate() {
-      return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-      this.birthDate = birthDate;
-    }
-  }
 }
