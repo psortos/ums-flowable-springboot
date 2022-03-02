@@ -4,17 +4,16 @@
   xmlns:flowable="http://flowable.org/bpmn"
   targetNamespace="Examples">
 
-  <process id="oneTaskProcess" name="The One Task Process">
+  <process id="multiTaskProcess" name="A Multi Task Process">
     <startEvent id="theStart"/>
     <sequenceFlow id="flow1" sourceRef="theStart" targetRef="theResponse"/>
 
-    <userTask id="theTask" name="my task" flowable:assignee="${person.username}"/>
-    <sequenceFlow  id="flow2" sourceRef="theTask" targetRef="theEnd"/>
-
     <serviceTask id="theResponse" name="The response task"
-      flowable:delegateExpression="${triggerableServiceTask}"/>
-    <sequenceFlow  id="flow3" sourceRef="theResponse" targetRef="theTask"/>
+      flowable:delegateExpression="${triggerableServiceTask}" flowable:async="true" flowable:triggerable="true"/>
+    <sequenceFlow  id="flow3" sourceRef="theResponse" targetRef="secondTask"/>
 
+    <userTask id="secondTask" name="second task" flowable:assignee="${person.username}"/>
+    <sequenceFlow  id="flow4" sourceRef="secondTask" targetRef="theEnd"/>
 
     <endEvent id="theEnd"/>
   </process>

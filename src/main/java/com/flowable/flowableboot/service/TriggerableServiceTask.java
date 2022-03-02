@@ -11,17 +11,21 @@ import org.springframework.stereotype.Service;
 @Service("triggerableServiceTask")
 @Scope("prototype")
 public class TriggerableServiceTask implements JavaDelegate
-//    , TriggerableActivityBehavior
+    , TriggerableActivityBehavior
     , Serializable
   {
+
+  @Override
   public void execute(DelegateExecution execution) {
     System.out.println("execute");
     incrementCount(execution);
   }
-//  public void trigger(DelegateExecution execution, String signalName, Object signalData) {
-//    System.out.println("trigger");
-//    incrementCount(execution);
-//  }
+
+  @Override
+  public void trigger(DelegateExecution execution, String signalName, Object signalData) {
+    System.out.println("trigger");
+    incrementCount(execution);
+  }
   public void incrementCount(DelegateExecution execution) {
     String variableName = "count";
     int count = 0;
