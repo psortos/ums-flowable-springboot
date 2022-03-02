@@ -6,14 +6,14 @@
 
   <process id="multiTaskProcess" name="A Multi Task Process">
     <startEvent id="theStart"/>
-    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="theResponse"/>
+    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="service1"/>
 
-    <serviceTask id="theResponse" name="The response task"
+    <serviceTask id="service1" name="1st service"
       flowable:delegateExpression="${triggerableServiceTask}" flowable:async="true" flowable:triggerable="true"/>
-    <sequenceFlow  id="flow3" sourceRef="theResponse" targetRef="secondTask"/>
+    <sequenceFlow  id="flow3" sourceRef="service1" targetRef="task1"/>
 
-    <userTask id="secondTask" name="second task" flowable:assignee="${person.username}"/>
-    <sequenceFlow  id="flow4" sourceRef="secondTask" targetRef="theEnd"/>
+    <userTask id="task1" name="1st task" flowable:assignee="${person.username}"/>
+    <sequenceFlow  id="flow4" sourceRef="task1" targetRef="theEnd"/>
 
     <endEvent id="theEnd"/>
   </process>
