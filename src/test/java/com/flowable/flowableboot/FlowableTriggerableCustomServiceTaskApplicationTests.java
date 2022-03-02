@@ -42,7 +42,7 @@ public class FlowableTriggerableCustomServiceTaskApplicationTests {
 
     Map<String, Object> variables = new HashMap<String, Object>();
     variables.put("person", person);
-    
+
     // Start a new process instance
     ProcessInstance processInstance = this.runtimeService.startProcessInstanceByKey("multiTaskProcess", variables);
 
@@ -95,8 +95,10 @@ public class FlowableTriggerableCustomServiceTaskApplicationTests {
         .taskName("1st task")
         .singleResult();
 
+//    Test hangs here if this task is not completed, this task is completed by
+    // running the rest call to 8080/process
 //    Complete the user task
-    this.taskService.complete(task.getId());
+//    this.taskService.complete(task.getId());
 
 //    Check to see process has ended
     await().atMost(30L, TimeUnit.SECONDS).until(
