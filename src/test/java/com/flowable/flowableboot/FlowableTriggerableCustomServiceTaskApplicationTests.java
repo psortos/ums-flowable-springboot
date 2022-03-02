@@ -95,6 +95,7 @@ public class FlowableTriggerableCustomServiceTaskApplicationTests {
         .taskName("1st task")
         .singleResult();
 
+    //TODO
 //    Test hangs here if this task is not completed, this task is completed by
     // running the rest call to 8080/process
 //    Complete the user task
