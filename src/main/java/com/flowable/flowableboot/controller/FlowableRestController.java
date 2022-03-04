@@ -1,10 +1,15 @@
 package com.flowable.flowableboot.controller;
 
 import com.flowable.flowableboot.model.Person;
+import com.flowable.flowableboot.model.StartProcessRepresentation;
+import com.flowable.flowableboot.model.TaskRepresentation;
+import com.flowable.flowableboot.model.UserTaskRepresentation;
 import com.flowable.flowableboot.service.FlowableService;
+import com.flowable.flowableboot.service.ReceiveTask;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,16 +23,32 @@ import org.springframework.web.bind.annotation.RestController;
 public class FlowableRestController {
 
   private final FlowableService flowableService;
+  private final ReceiveTask receiveTask;
 
   public FlowableRestController(
-      FlowableService flowableService) {
+      FlowableService flowableService, ReceiveTask receiveTask) {
     this.flowableService = flowableService;
+    this.receiveTask = receiveTask;
   }
 
   @PostMapping(value="/process")
   public void startProcessInstance(@RequestBody StartProcessRepresentation startProcessRepresentation){
     String assignee = startProcessRepresentation.getAssignee();
     flowableService.startProcess(assignee);
+  }
+
+  @PostMapping(value="/usertask")
+  public void runUserTask(@RequestBody UserTaskRepresentation UserTaskRepresentation){
+    String taskName = UserTaskRepresentation.getTaskName();
+    String processId = UserTaskRepresentation.getProcessId();
+    Task task = flowableService.retrieveTask(taskName, processId);
+    flowableService.completeTask(task);
+  }
+
+  @PostMapping(value="/wait")
+  public void runUserTask(){
+    receiveTask.receive();
+//    flowableService.completeTask(task);
   }
 
   @PostMapping(value="/user")
@@ -49,40 +70,4 @@ public class FlowableRestController {
     }
     return dtos;
   }
-
-  static class TaskRepresentation {
-    private String id;
-    private String name;
-
-    public TaskRepresentation(String id, String name){
-      this.id = id;
-      this.name = name;
-    }
-
-    public String getId(){
-      return id;
-    }
-    public void setId(String id){
-      this.id = id;
-    }
-    public String getName(){
-      return name;
-    }
-    public void setName(String name){
-      this.name = name;
-    }
-  }
-
-  static class StartProcessRepresentation {
-    private String assignee;
-
-    public String getAssignee() {
-      return assignee;
-    }
-
-    public void setAssignee(String assignee) {
-      this.assignee = assignee;
-    }
-  }
-
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
+import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,7 @@ public class FlowableService {
   @Autowired
   private PersonRepository personRepository;
 
-
-//  Method to initiate prorcess with an assignee name
+  //  Method to initiate process with an assignee name
   public void startProcess(String assignee) {
 
     Person person = personRepository.findByUsername(assignee);
@@ -51,8 +51,21 @@ public class FlowableService {
   public void createDemoUsers(){
     if (personRepository.findAll().size() == 0){
 //      personRepository.save(new Person("estyl", "pedro", "sorto", new Date()));
-//      personRepository.save(new Person("lawlerz", "savio", "nguyen", new Date()));
     }
+  }
+
+//  This method needs to be passed a process instance ID value to be able
+  // to search for specific tasks within the current process
+  public Task retrieveTask(String taskName, String processId){
+    Task task = this.taskService.createTaskQuery()
+        .taskId(processId)
+        .taskName(taskName)
+        .singleResult();
+    return task;
+  }
+
+  public void completeTask(Task task){
+    this.taskService.complete(task.getId());
   }
 
 }

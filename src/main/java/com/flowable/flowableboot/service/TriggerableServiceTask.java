@@ -18,7 +18,7 @@ public class TriggerableServiceTask implements JavaDelegate
   @Override
   public void execute(DelegateExecution execution) {
     System.out.println("execute");
-    incrementCount(execution);
+//    incrementCount(execution);
   }
 
   @Override
