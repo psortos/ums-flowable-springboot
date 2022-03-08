@@ -53,12 +53,10 @@ public class FlowableRestController {
 
   @PostMapping(value="/user")
   public void CreateUserEndpoint(@RequestBody Person person){
-//    List<Object> userDetails = new ArrayList<Object>();
-    String username = person.getUsername();
-    String firstName = person.getFirstName();
-    String lastName = person.getLastName();
-    Date birthdate = person.getBirthDate();
-    flowableService.addUser(username, firstName, lastName, birthdate);
+    flowableService.addUser(person.getUsername(),
+        person.getFirstName(),
+        person.getLastName(),
+        person.getBirthDate());
   }
 
   @RequestMapping(value="/tasks", method= RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)

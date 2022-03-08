@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service("triggerableUserTask")
 @Scope("prototype")
 public class TriggerableUserTask implements JavaDelegate {
 
@@ -19,23 +19,7 @@ public class TriggerableUserTask implements JavaDelegate {
   private TaskService taskService;
 
   public void execute( DelegateExecution execution){
-
-    String processInstanceId = execution.getProcessInstanceId();
-    Task task = retrieveUserTask(processInstanceId, "1st task");
-
-    completeUserTask(task);
-  }
-
-  public Task retrieveUserTask( String processInstanceId, String taskName){
-
-    Task task = this.taskService.createTaskQuery()
-        .processInstanceId(processInstanceId)
-        .taskName(taskName)
-        .singleResult();
-    return task;
-  }
-
-  public void completeUserTask(Task task){
-    this.taskService.complete(task.getId());
+    System.out.println("Setting status to complete");
+    execution.setVariable("status", "COMPLETE");
   }
 }

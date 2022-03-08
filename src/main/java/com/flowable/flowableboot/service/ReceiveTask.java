@@ -15,7 +15,7 @@ public class ReceiveTask   {
   private RuntimeService runtimeService;
 
   public void receive() {
-    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("receiveTask");
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("multiTaskProcess");
     Execution execution = runtimeService.createExecutionQuery()
         .processInstanceId(processInstance.getId())
         .activityId("waitTask")

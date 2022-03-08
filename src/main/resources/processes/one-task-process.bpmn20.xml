@@ -2,25 +2,55 @@
 <definitions
   xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
   xmlns:flowable="http://flowable.org/bpmn"
-  targetNamespace="Examples">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  typeLanguage="http://www.w3.org/2001/XMLSchema"
+  expressionLanguage="http://www.w3.org/1999/XPath"
+  targetNamespace="http://www.flowable.org/processdef">
 
   <process id="multiTaskProcess" name="A Multi Task Process">
     <startEvent id="theStart"/>
-    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="task1"/>
+    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="service3"/>
 
 
-    <userTask id="task1" name="1st task" flowable:assignee="${person.username}"/>
-    <!--    <userTask id="task1" name="1st task" />-->
-    <sequenceFlow  id="flow3" sourceRef="task1" targetRef="service1"/>
+<!--    <userTask id="task1" name="first" flowable:assignee="${person.username}"/>-->
+<!--    <sequenceFlow  id="flow2" sourceRef="task1" targetRef="service1"/>-->
 
-    <serviceTask id="service1" name="1st service"
-      flowable:delegateExpression="${triggerableServiceTask}" flowable:async="true" flowable:triggerable="true"/>
-    <sequenceFlow  id="flow2" sourceRef="service1" targetRef="theEnd"/>
+<!--    <serviceTask id="service1" name="1st service"-->
+<!--      flowable:assignee="${person.username}"-->
+<!--      flowable:delegateExpression="${triggerableServiceTask}"-->
+<!--      flowable:async="true"-->
+<!--    />-->
+<!--    <sequenceFlow  id="flow3" sourceRef="service1" targetRef="task3"/>-->
 
-<!--    <receiveTask id="waitTask" name="wait" />-->
-<!--    <sequenceFlow  id="flow4" sourceRef="waitTask" targetRef="theEnd"/>-->
+<!--    <userTask id="task3" name="third" flowable:assignee="PEDROSORTO"/>-->
+<!--    <sequenceFlow  id="flow4" sourceRef="task3" targetRef="service3"/>-->
+
+    <serviceTask id="service3" name="3rd service"
+      flowable:delegateExpression="${triggerableUserTask}"
+      flowable:async="true"
+      flowable:assignee="${person.username}"
+    />
+    <sequenceFlow  id="flow6" sourceRef="service3" targetRef="decision"/>
+
+    <exclusiveGateway id="decision"/>
+    <sequenceFlow sourceRef="decision" targetRef="task2">
+      <conditionExpression xsi:type="tFormalExpression">
+        <![CDATA[
+            ${status == "COMPLETE"}
+          ]]>
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow  sourceRef="decision" targetRef="theEnd">
+      <conditionExpression xsi:type="tFormalExpression">
+        <![CDATA[
+            ${status != "COMPLETE"}
+          ]]>
+      </conditionExpression>
+    </sequenceFlow>
+
+    <userTask id="task2" name="second" flowable:assignee="${person.username}"/>
+    <sequenceFlow  id="flow7" sourceRef="task2" targetRef="theEnd"/>
 
     <endEvent id="theEnd"/>
   </process>
-
 </definitions>

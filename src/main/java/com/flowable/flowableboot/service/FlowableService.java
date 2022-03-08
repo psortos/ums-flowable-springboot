@@ -61,11 +61,14 @@ public class FlowableService {
         .taskId(processId)
         .taskName(taskName)
         .singleResult();
+    Map<String, Object> vars = task.getProcessVariables();
     return task;
   }
 
   public void completeTask(Task task){
     this.taskService.complete(task.getId());
   }
+
+//  public void updateTaskStatus(st)
 
 }
