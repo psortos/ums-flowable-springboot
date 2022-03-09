@@ -82,4 +82,11 @@ public class FlowableService {
   public void completeTask(Task task){
     this.taskService.complete(task.getId());
   }
+
+  public void setStatus(String status, String taskId)
+  {
+    Map<String, Object> variables = new HashMap<>();
+    variables.put("status", status);
+    this.taskService.complete(taskId, variables);
+  }
 }

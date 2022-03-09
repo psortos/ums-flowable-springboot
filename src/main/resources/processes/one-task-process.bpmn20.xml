@@ -9,30 +9,27 @@
 
   <process id="multiTaskProcess" name="A Multi Task Process">
     <startEvent id="theStart"/>
-    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="task1"/>
+    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="statusTask"/>
 
-    <userTask id="task1" name="first" flowable:assignee="${person.username}"/>
-    <sequenceFlow  id="flow2" sourceRef="task1" targetRef="service1"/>
+    <userTask id="statusTask" name="set status" flowable:assignee="${person.username}"/>
+    <sequenceFlow  id="flow7" sourceRef="statusTask" targetRef="service1"/>
 
     <serviceTask id="service1" name="1st service"
       flowable:assignee="${person.username}"
       flowable:delegateExpression="${triggerableServiceTask}"
       flowable:async="true"
     />
-    <sequenceFlow  id="flow3" sourceRef="service1" targetRef="service3"/>
+    <sequenceFlow  id="flow3" sourceRef="service1" targetRef="decision"/>
 
-<!--    <userTask id="task3" name="third" flowable:assignee="PEDROSORTO"/>-->
-<!--    <sequenceFlow  id="flow4" sourceRef="task3" targetRef="service3"/>-->
-
-    <serviceTask id="service3" name="3rd service"
-      flowable:delegateExpression="${triggerableUserTask}"
-      flowable:async="true"
-      flowable:assignee="${person.username}"
-    />
-    <sequenceFlow  id="flow6" sourceRef="service3" targetRef="decision"/>
+<!--    <serviceTask id="service3" name="3rd service"-->
+<!--      flowable:delegateExpression="${triggerableUserTask}"-->
+<!--      flowable:async="true"-->
+<!--      flowable:assignee="${person.username}"-->
+<!--    />-->
+<!--    <sequenceFlow  id="flow6" sourceRef="service3" targetRef="decision"/>-->
 
     <exclusiveGateway id="decision"/>
-    <sequenceFlow sourceRef="decision" targetRef="task2">
+    <sequenceFlow sourceRef="decision" targetRef="lastTask">
       <conditionExpression xsi:type="tFormalExpression">
         <![CDATA[
             ${status == "COMPLETE"}
@@ -47,8 +44,8 @@
       </conditionExpression>
     </sequenceFlow>
 
-    <userTask id="task2" name="second" flowable:assignee="${person.username}"/>
-    <sequenceFlow  id="flow7" sourceRef="task2" targetRef="theEnd"/>
+    <userTask id="lastTask" name="last" flowable:assignee="${person.username}"/>
+    <sequenceFlow  id="flow2" sourceRef="lastTask" targetRef="theEnd"/>
 
     <endEvent id="theEnd"/>
   </process>

@@ -1,8 +1,10 @@
 package com.flowable.flowableboot.controller;
 
 import com.flowable.flowableboot.model.Person;
+import com.flowable.flowableboot.model.ProcessInstanceRepresentation;
 import com.flowable.flowableboot.model.StartProcessRepresentation;
 import com.flowable.flowableboot.model.TaskRepresentation;
+import com.flowable.flowableboot.model.TaskStatusRepresentation;
 import com.flowable.flowableboot.model.UserTaskRepresentation;
 import com.flowable.flowableboot.service.FlowableService;
 import com.flowable.flowableboot.service.ReceiveTask;
@@ -38,17 +40,19 @@ public class FlowableRestController {
   }
 
   @PostMapping(value="/usertask")
-  public void runUserTask(@RequestBody UserTaskRepresentation UserTaskRepresentation){
-    String taskName = UserTaskRepresentation.getTaskName();
-    String processId = UserTaskRepresentation.getProcessId();
+  public void runUserTask(@RequestBody UserTaskRepresentation userTaskRepresentation){
+    String taskName = userTaskRepresentation.getTaskName();
+    String processId = userTaskRepresentation.getProcessId();
     Task task = flowableService.retrieveTask(taskName, processId);
     flowableService.completeTask(task);
   }
 
-  @PostMapping(value="/wait")
-  public void runUserTask(){
-    receiveTask.receive();
-//    flowableService.completeTask(task);
+  @PostMapping(value="/status")
+  public void setStatus(@RequestBody TaskStatusRepresentation taskStatusRepresentation){
+    String status = taskStatusRepresentation.getStatus();
+    String taskId = taskStatusRepresentation.getId();
+    flowableService.setStatus(status, taskId);
+
   }
 
   @PostMapping(value="/user")
@@ -70,15 +74,17 @@ public class FlowableRestController {
   }
 
   @RequestMapping(value="/processes", method= RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-  public void getProcesses(){
+  public List<ProcessInstanceRepresentation> getProcesses(){
     List<ProcessInstance> processes = flowableService.getProcessInstances();
 
     System.out.println("Current Processes");
+    List<ProcessInstanceRepresentation> processIdList = new ArrayList<>();
     for(ProcessInstance process : processes){
+      processIdList.add(new ProcessInstanceRepresentation(process.getId()));
 //    System.out.println(process);
       flowableService.processInstanceDetails(process.getId());
     }
-
+    return processIdList;
   }
 
 }
