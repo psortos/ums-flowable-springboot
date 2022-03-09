@@ -42,6 +42,21 @@ public class FlowableService {
     return taskService.createTaskQuery().taskAssignee(assignee).list();
   }
 
+//  Method to get current processes
+  public List<ProcessInstance> getProcessInstances(){
+
+    List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery()
+        .active()
+        .list();
+    return processInstances;
+  }
+
+  public void processInstanceDetails(String processId){
+    System.out.println(String.format("processId: %s", processId));
+//    Suspend all process instances
+//    runtimeService.suspendProcessInstanceById(processId);
+  }
+
 //  Method to add a new user
   public void addUser(String username, String firstName, String lastName, Date birthDate){
     Person person = new Person();
@@ -57,18 +72,14 @@ public class FlowableService {
 //  This method needs to be passed a process instance ID value to be able
   // to search for specific tasks within the current process
   public Task retrieveTask(String taskName, String processId){
-    Task task = this.taskService.createTaskQuery()
+    Task task = taskService.createTaskQuery()
         .taskId(processId)
         .taskName(taskName)
         .singleResult();
-    Map<String, Object> vars = task.getProcessVariables();
     return task;
   }
 
   public void completeTask(Task task){
     this.taskService.complete(task.getId());
   }
-
-//  public void updateTaskStatus(st)
-
 }

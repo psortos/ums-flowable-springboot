@@ -68,4 +68,17 @@ public class FlowableRestController {
     }
     return dtos;
   }
+
+  @RequestMapping(value="/processes", method= RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+  public void getProcesses(){
+    List<ProcessInstance> processes = flowableService.getProcessInstances();
+
+    System.out.println("Current Processes");
+    for(ProcessInstance process : processes){
+//    System.out.println(process);
+      flowableService.processInstanceDetails(process.getId());
+    }
+
+  }
+
 }

@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service("triggerableServiceTask")
 @Scope("prototype")
-public class TriggerableServiceTask implements JavaDelegate
-    , Serializable
+public class TriggerableServiceTask implements JavaDelegate, Serializable
   {
 
   @Autowired
