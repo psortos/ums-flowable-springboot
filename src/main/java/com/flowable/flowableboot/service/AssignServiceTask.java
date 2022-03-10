@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-@Service("triggerableServiceTask")
+@Service("assignServiceTask")
 @Scope("prototype")
-public class TriggerableServiceTask implements JavaDelegate, Serializable
+public class AssignServiceTask implements JavaDelegate, Serializable
   {
 
   @Autowired
@@ -24,7 +24,7 @@ public class TriggerableServiceTask implements JavaDelegate, Serializable
   @Override
   public void execute(DelegateExecution execution) {
 
-    System.out.println(String.format("Executio id: %s", execution.getId()));
+    System.out.println(String.format("Execution id: %s", execution.getId()));
 
     Scanner scanner = new Scanner(System.in);
     System.out.println(String.format("Service task triggered: %s", execution));

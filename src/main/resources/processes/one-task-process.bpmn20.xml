@@ -9,17 +9,17 @@
 
   <process id="multiTaskProcess" name="A Multi Task Process">
     <startEvent id="theStart"/>
-    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="service1"/>
+    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="assignService"/>
 
-    <serviceTask id="service1" name="1st service"
+    <serviceTask id="assignService" name="assign task to analyst"
       flowable:assignee="OWNER"
-      flowable:delegateExpression="${triggerableServiceTask}"
+      flowable:delegateExpression="${assignServiceTask}"
       flowable:async="true"
     />
-    <sequenceFlow  id="flow3" sourceRef="service1" targetRef="statusTask"/>
+    <sequenceFlow  id="flow2" sourceRef="assignService" targetRef="statusTask"/>
 
-    <userTask id="statusTask" name="set status" flowable:assignee="OWNER"/>
-    <sequenceFlow  id="flow7" sourceRef="statusTask" targetRef="decision"/>
+    <userTask id="statusTask" name="set status to in progress" flowable:assignee="OWNER"/>
+    <sequenceFlow  id="flow3" sourceRef="statusTask" targetRef="analystStatus"/>
 
 
     <!--    <serviceTask id="service3" name="3rd service"-->
@@ -29,6 +29,11 @@
 <!--    />-->
 <!--    <sequenceFlow  id="flow6" sourceRef="service3" targetRef="decision"/>-->
 
+
+    <userTask id="analystStatus" name="analyst status" flowable:assignee="${assignedUsername}"/>
+    <sequenceFlow  id="flow4" sourceRef="analystStatus" targetRef="decision"/>
+
+
     <exclusiveGateway id="decision"/>
     <sequenceFlow sourceRef="decision" targetRef="lastTask">
       <conditionExpression xsi:type="tFormalExpression">
@@ -37,7 +42,7 @@
           ]]>
       </conditionExpression>
     </sequenceFlow>
-    <sequenceFlow  sourceRef="decision" targetRef="theEnd">
+    <sequenceFlow  sourceRef="decision" targetRef="analystStatus">
       <conditionExpression xsi:type="tFormalExpression">
         <![CDATA[
             ${status != "COMPLETE"}
@@ -46,7 +51,7 @@
     </sequenceFlow>
 
     <userTask id="lastTask" name="last" flowable:assignee="${assignedUsername}"/>
-    <sequenceFlow  id="flow2" sourceRef="lastTask" targetRef="theEnd"/>
+    <sequenceFlow  id="flow5" sourceRef="lastTask" targetRef="theEnd"/>
 
     <endEvent id="theEnd"/>
   </process>

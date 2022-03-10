@@ -35,6 +35,7 @@ public class FlowableService {
     Map<String, Object> variables = new HashMap<String, Object>();
     variables.put("person", person);
     runtimeService.startProcessInstanceByKey("multiTaskProcess", variables);
+//    runtimeService.startProcessInstanceByKey("multiTaskProcess");
   }
 
 // Method to get tasks by assignee name
