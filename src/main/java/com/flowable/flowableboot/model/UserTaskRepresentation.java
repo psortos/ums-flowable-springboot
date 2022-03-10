@@ -2,14 +2,11 @@ package com.flowable.flowableboot.model;
 
 public class UserTaskRepresentation {
   private String taskName;
-  private String processId;
+  private String taskId;
 
-  public String getProcessId() {
-    return processId;
-  }
-
-  public void setProcessId(String processId) {
-    this.processId = processId;
+  public UserTaskRepresentation(String taskName, String taskId) {
+    this.taskName = taskName;
+    this.taskId = taskId;
   }
 
   public String getTaskName() {
@@ -18,5 +15,13 @@ public class UserTaskRepresentation {
 
   public void setTaskName(String taskName) {
     this.taskName = taskName;
+  }
+
+  public String getTaskId() {
+    return taskId;
+  }
+
+  public void setTaskId(String taskId) {
+    this.taskId = taskId;
   }
 }

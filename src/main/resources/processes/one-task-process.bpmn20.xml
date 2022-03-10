@@ -9,19 +9,20 @@
 
   <process id="multiTaskProcess" name="A Multi Task Process">
     <startEvent id="theStart"/>
-    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="statusTask"/>
-
-    <userTask id="statusTask" name="set status" flowable:assignee="${person.username}"/>
-    <sequenceFlow  id="flow7" sourceRef="statusTask" targetRef="service1"/>
+    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="service1"/>
 
     <serviceTask id="service1" name="1st service"
-      flowable:assignee="${person.username}"
+      flowable:assignee="OWNER"
       flowable:delegateExpression="${triggerableServiceTask}"
       flowable:async="true"
     />
-    <sequenceFlow  id="flow3" sourceRef="service1" targetRef="decision"/>
+    <sequenceFlow  id="flow3" sourceRef="service1" targetRef="statusTask"/>
 
-<!--    <serviceTask id="service3" name="3rd service"-->
+    <userTask id="statusTask" name="set status" flowable:assignee="OWNER"/>
+    <sequenceFlow  id="flow7" sourceRef="statusTask" targetRef="decision"/>
+
+
+    <!--    <serviceTask id="service3" name="3rd service"-->
 <!--      flowable:delegateExpression="${triggerableUserTask}"-->
 <!--      flowable:async="true"-->
 <!--      flowable:assignee="${person.username}"-->
@@ -44,7 +45,7 @@
       </conditionExpression>
     </sequenceFlow>
 
-    <userTask id="lastTask" name="last" flowable:assignee="${person.username}"/>
+    <userTask id="lastTask" name="last" flowable:assignee="${assignedUsername}"/>
     <sequenceFlow  id="flow2" sourceRef="lastTask" targetRef="theEnd"/>
 
     <endEvent id="theEnd"/>

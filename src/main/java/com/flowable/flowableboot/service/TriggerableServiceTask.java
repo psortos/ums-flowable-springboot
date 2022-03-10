@@ -3,6 +3,7 @@ package com.flowable.flowableboot.service;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Scanner;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.delegate.JavaDelegate;
@@ -22,10 +23,17 @@ public class TriggerableServiceTask implements JavaDelegate, Serializable
 
   @Override
   public void execute(DelegateExecution execution) {
+
+    System.out.println(String.format("Executio id: %s", execution.getId()));
+
+    Scanner scanner = new Scanner(System.in);
     System.out.println(String.format("Service task triggered: %s", execution));
     incrementCount(execution);
-//    execution.setVariable("username", "PEDROSORTO");
-//    return;
+
+    System.out.println("Enter assignee username:");
+    String assignee = scanner.nextLine();
+    System.out.println(String.format("Task assignee: %s", assignee));
+    execution.setVariable("assignedUsername", assignee);
   }
 
 //  @Override

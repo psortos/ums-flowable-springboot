@@ -42,8 +42,8 @@ public class FlowableRestController {
   @PostMapping(value="/usertask")
   public void runUserTask(@RequestBody UserTaskRepresentation userTaskRepresentation){
     String taskName = userTaskRepresentation.getTaskName();
-    String processId = userTaskRepresentation.getProcessId();
-    Task task = flowableService.retrieveTask(taskName, processId);
+    String taskId = userTaskRepresentation.getTaskId();
+    Task task = flowableService.retrieveTask(taskName, taskId);
     flowableService.completeTask(task);
   }
 
