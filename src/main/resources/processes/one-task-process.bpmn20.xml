@@ -12,7 +12,7 @@
     <sequenceFlow id="flow1" sourceRef="theStart" targetRef="assignService"/>
 
     <serviceTask id="assignService" name="assign task to analyst"
-      flowable:assignee="OWNER"
+      flowable:assignee="${person.username}"
       flowable:delegateExpression="${assignServiceTask}"
       flowable:async="true"
     />

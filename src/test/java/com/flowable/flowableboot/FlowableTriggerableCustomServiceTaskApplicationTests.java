@@ -58,52 +58,52 @@ public class FlowableTriggerableCustomServiceTaskApplicationTests {
         .singleResult() != null
     );
 
-    //    Check the value of the count var before the trigger
-    HistoricVariableInstance historicVariableInstance = this.historyService.createHistoricVariableInstanceQuery()
-        .processInstanceId(processInstance.getProcessInstanceId())
-        .variableName("count")
-        .singleResult();
+//    //    Check the value of the count var before the trigger
+//    HistoricVariableInstance historicVariableInstance = this.historyService.createHistoricVariableInstanceQuery()
+//        .processInstanceId(processInstance.getProcessInstanceId())
+//        .variableName("count")
+//        .singleResult();
+//
+//    //    print the value of count as it was modified in the execute method
+//    System.out.println(String.format("Before trigger: %s", historicVariableInstance.getValue()));
 
-    //    print the value of count as it was modified in the execute method
-    System.out.println(String.format("Before trigger: %s", historicVariableInstance.getValue()));
+//    //    Get the execution ID of the triggerable service task
+//    Execution execution = this.runtimeService.createExecutionQuery()
+//        .processInstanceId(processInstance.getProcessInstanceId())
+//        .activityId("service1")
+//        .singleResult();
+//
+//    //    Trigger the service task
+//    this.runtimeService.trigger(execution.getId());
 
-    //    Get the execution ID of the triggerable service task
-    Execution execution = this.runtimeService.createExecutionQuery()
-        .processInstanceId(processInstance.getProcessInstanceId())
-        .activityId("service1")
-        .singleResult();
-
-    //    Trigger the service task
-    this.runtimeService.trigger(execution.getId());
-
-    //    Get the value of the variable 'count' after the trigger
-    historicVariableInstance = this.historyService.createHistoricVariableInstanceQuery()
-        .processInstanceId(processInstance.getProcessInstanceId())
-        .variableName("count")
-        .singleResult();
-
-    //    Value of count as it was modified in the trigger method
-    System.out.println(String.format("After trigger: %s", historicVariableInstance.getValue()));
+//    //    Get the value of the variable 'count' after the trigger
+//    historicVariableInstance = this.historyService.createHistoricVariableInstanceQuery()
+//        .processInstanceId(processInstance.getProcessInstanceId())
+//        .variableName("count")
+//        .singleResult();
+//
+//    //    Value of count as it was modified in the trigger method
+//    System.out.println(String.format("After trigger: %s", historicVariableInstance.getValue()));
 
     //    Check if the user task was reached
     await().atMost(30L, TimeUnit.SECONDS).until(
         () -> this.runtimeService.createExecutionQuery()
-        .activityId("task1")
+        .activityId("statusTask")
         .processInstanceId(processInstance.getProcessInstanceId())
         .singleResult() != null
     );
 
-    // Retrieve the specific task by passing in the task name and processInstanceID
+//    // Retrieve the specific task by passing in the task name and processInstanceID
 //    Task userTask = this.flowableService.retrieveTask(processInstance, "1st task");
 //    this.flowableService.completeTask(userTask);
-
-//    Check to see process has ended
-    await().atMost(30L, TimeUnit.SECONDS).until(
-        () -> this.historyService.createHistoricProcessInstanceQuery()
-        .processInstanceId(processInstance.getProcessInstanceId())
-        .finished()
-        .singleResult() != null
-    );
+//
+////    Check to see process has ended
+//    await().atMost(30L, TimeUnit.SECONDS).until(
+//        () -> this.historyService.createHistoricProcessInstanceQuery()
+//        .processInstanceId(processInstance.getProcessInstanceId())
+//        .finished()
+//        .singleResult() != null
+//    );
   }
 
 
