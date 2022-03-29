@@ -1,11 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<definitions
-  xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-  xmlns:flowable="http://flowable.org/bpmn"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  typeLanguage="http://www.w3.org/2001/XMLSchema"
-  expressionLanguage="http://www.w3.org/1999/XPath"
-  targetNamespace="http://www.flowable.org/processdef">
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef" exporter="Flowable Open Source Modeler" exporterVersion="6.7.2">
 
   <process id="multiTaskProcess" name="A Multi Task Process">
     <startEvent id="theStart"/>
@@ -18,7 +12,7 @@
     />
     <sequenceFlow  id="flow2" sourceRef="assignService" targetRef="statusTask"/>
 
-    <userTask id="statusTask" name="set status to in progress" flowable:assignee="OWNER"/>
+    <userTask id="statusTask" name="set status to in progress" flowable:assignee="${person.username}"/>
     <sequenceFlow  id="flow3" sourceRef="statusTask" targetRef="analystStatus"/>
 
 
@@ -32,7 +26,6 @@
 
     <userTask id="analystStatus" name="analyst status" flowable:assignee="${assignedUsername}"/>
     <sequenceFlow  id="flow4" sourceRef="analystStatus" targetRef="decision"/>
-
 
     <exclusiveGateway id="decision"/>
     <sequenceFlow sourceRef="decision" targetRef="lastTask">

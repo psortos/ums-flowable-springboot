@@ -59,9 +59,9 @@ public class FlowableService {
   }
 
 //  Method to add a new user
-  public void addUser(String username, String firstName, String lastName, Date birthDate){
+  public void addUser(String username, String firstName, String lastName){
     Person person = new Person();
-    personRepository.save(new Person(username, firstName, lastName, birthDate));
+    personRepository.save(new Person(username, firstName, lastName));
   }
 
   public void createDemoUsers(){

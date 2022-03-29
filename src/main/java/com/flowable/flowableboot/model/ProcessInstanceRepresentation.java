@@ -1,3 +1,6 @@
+// This class is used to represent a ProcessInstance object
+// which returns a process instance ID value
+
 package com.flowable.flowableboot.model;
 
 public class ProcessInstanceRepresentation {

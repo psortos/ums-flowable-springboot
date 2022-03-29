@@ -11,11 +11,8 @@ import java.util.concurrent.TimeUnit;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
-import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.test.Deployment;
-import org.flowable.task.api.Task;
-import org.flowable.variable.api.history.HistoricVariableInstance;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,7 +35,7 @@ public class FlowableTriggerableCustomServiceTaskApplicationTests {
   private FlowableService flowableService;
 
   @Test
-  @Deployment(resources = "/processes/one-task-process.bpmn20")
+  @Deployment(resources = "/processes/one-task-process.bpmn20.xml")
   void testTriggereableCustomerServiceTask(){
 
     // Pull a person from personRepository

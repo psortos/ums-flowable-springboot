@@ -12,20 +12,17 @@ class Person {
   @Id
   @GeneratedValue
   private Long id;
-
   private String username;
   private String firstName;
   private String lastName;
-  private Date birthDate;
 
   public Person() {
   }
 
-  public Person(String username, String firstName, String lastName, Date birthDate) {
+  public Person(String username, String firstName, String lastName) {
     this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.birthDate = birthDate;
   }
 
   public Long getId() {
@@ -58,13 +55,5 @@ class Person {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
-  }
-
-  public Date getBirthDate() {
-    return birthDate;
-  }
-
-  public void setBirthDate(Date birthDate) {
-    this.birthDate = birthDate;
   }
 }

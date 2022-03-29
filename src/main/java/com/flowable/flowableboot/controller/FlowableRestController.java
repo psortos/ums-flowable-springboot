@@ -5,11 +5,9 @@ import com.flowable.flowableboot.model.ProcessInstanceRepresentation;
 import com.flowable.flowableboot.model.StartProcessRepresentation;
 import com.flowable.flowableboot.model.TaskRepresentation;
 import com.flowable.flowableboot.model.TaskStatusRepresentation;
-import com.flowable.flowableboot.model.UserTaskRepresentation;
 import com.flowable.flowableboot.service.FlowableService;
 import com.flowable.flowableboot.service.ReceiveTask;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
@@ -33,38 +31,44 @@ public class FlowableRestController {
     this.receiveTask = receiveTask;
   }
 
+//  Endpoint used to start a proces instance
   @PostMapping(value="/process")
   public void startProcessInstance(@RequestBody StartProcessRepresentation startProcessRepresentation){
     String assignee = startProcessRepresentation.getAssignee();
     flowableService.startProcess(assignee);
   }
 
+//  Endpoint used to complete a user task
   @PostMapping(value="/usertask")
-  public void runUserTask(@RequestBody UserTaskRepresentation userTaskRepresentation){
-    String taskName = userTaskRepresentation.getTaskName();
-    String taskId = userTaskRepresentation.getTaskId();
+  public void runUserTask(@RequestBody TaskRepresentation taskRepresentation){
+    String taskId = taskRepresentation.getId();
+    String taskName = taskRepresentation.getName();
+    // This is retrieving tasks by name and id
     Task task = flowableService.retrieveTask(taskName, taskId);
     flowableService.completeTask(task);
   }
 
+//  Endpoint used to update a task status
   @PostMapping(value="/status")
   public void setStatus(@RequestBody TaskStatusRepresentation taskStatusRepresentation){
-    String status = taskStatusRepresentation.getStatus();
     String taskId = taskStatusRepresentation.getId();
-    flowableService.setStatus(status, taskId);
+    String status = taskStatusRepresentation.getStatus();
+    flowableService.setStatus(taskId, status);
 
   }
 
+//  Endpoint to create a user task
   @PostMapping(value="/user")
   public void CreateUserEndpoint(@RequestBody Person person){
     flowableService.addUser(person.getUsername(),
         person.getFirstName(),
-        person.getLastName(),
-        person.getBirthDate());
+        person.getLastName());
   }
 
+//  Endpoint used to retrieve task information
   @RequestMapping(value="/tasks", method= RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
   public List<TaskRepresentation> getTasks(@RequestParam String assignee) {
+    //  This is retrieving tasks by assignee name
     List<Task> tasks = flowableService.getTasks(assignee);
     List<TaskRepresentation> dtos = new ArrayList<>();
     for (Task task : tasks) {
@@ -73,6 +77,7 @@ public class FlowableRestController {
     return dtos;
   }
 
+//  Returns all active processes
   @RequestMapping(value="/processes", method= RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
   public List<ProcessInstanceRepresentation> getProcesses(){
     List<ProcessInstance> processes = flowableService.getProcessInstances();
@@ -81,7 +86,6 @@ public class FlowableRestController {
     List<ProcessInstanceRepresentation> processIdList = new ArrayList<>();
     for(ProcessInstance process : processes){
       processIdList.add(new ProcessInstanceRepresentation(process.getId()));
-//    System.out.println(process);
       flowableService.processInstanceDetails(process.getId());
     }
     return processIdList;

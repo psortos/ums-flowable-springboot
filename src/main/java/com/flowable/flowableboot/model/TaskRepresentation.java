@@ -1,3 +1,6 @@
+// The purpose of this class is to provide an object
+//representation of a flowable process task
+// Tasks can vary from users tasks, services, etc.
 package com.flowable.flowableboot.model;
 
 public class TaskRepresentation {
